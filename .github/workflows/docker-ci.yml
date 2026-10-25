@@ -19,6 +19,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4 # Is like a car that brings your code to the runner
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24' # Specify the Node.js version to use
+          cache: 'npm' # Cache npm dependencies to speed up subsequent builds
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
       # Build the Docker image for the CI pipeline
       - name: Build Docker image
         run: docker build -t url-shortner-api:ci ./rest-api # Build the Docker image for the CI pipeline
