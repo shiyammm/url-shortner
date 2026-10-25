@@ -21,4 +21,4 @@ jobs:
 
       # Build the Docker image for the CI pipeline
       - name: Build Docker image
-        run: docker build -t url-shortner-api:ci . # Build the Docker image for the CI pipeline
+        run: docker build -t url-shortner-api:ci ./rest-api # Build the Docker image for the CI pipeline
