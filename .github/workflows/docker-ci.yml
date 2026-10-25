@@ -1,0 +1,24 @@
+name: Docker CI
+
+# Events that trigger the workflow
+on:
+
+  # Trigger on push or pull request to the main branch
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    # Use a GitHub-hosted Ubuntu runner
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository to the GitHub runner
+      - name: Checkout repository
+        uses: actions/checkout@v4 # Is like a car that brings your code to the runner
+
+      # Build the Docker image for the CI pipeline
+      - name: Build Docker image
+        run: docker build -t url-shortner-api:ci . # Build the Docker image for the CI pipeline
