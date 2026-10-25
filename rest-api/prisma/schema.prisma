@@ -1,0 +1,14 @@
+datasource db {
+  provider = "postgresql"
+}
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+model Url {
+  id        Int      @id @default(autoincrement())
+  original  String
+  short     String   @unique
+  createdAt DateTime @default(now())
+}
