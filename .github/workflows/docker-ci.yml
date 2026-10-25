@@ -24,11 +24,14 @@ jobs:
         with:
           node-version: '24' # Specify the Node.js version to use the commands like (npm ci, npm test)
           cache: 'npm' # Cache npm dependencies to speed up subsequent builds
+          cache-path: rest-api/package-lock.json
 
       - name: Install dependencies
+        working-directory: ./rest-api # Set the working directory to the REST API folder
         run: npm ci # Install project dependencies in a clean environment
 
       - name: Run tests
+        working-directory: ./rest-api # Set the working directory to the REST API folder
         run: npm test # Run the test suite to ensure code correctness
 
       # Build the Docker image for the CI pipeline
