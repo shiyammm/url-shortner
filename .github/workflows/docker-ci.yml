@@ -14,6 +14,11 @@ jobs:
     # Use a GitHub-hosted Ubuntu runner
     runs-on: ubuntu-latest
 
+    # Set permissions for the workflow steps to control access to repository contents and packages
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       # Checkout the repository to the GitHub runner
       - name: Checkout repository
@@ -34,6 +39,19 @@ jobs:
         working-directory: ./rest-api # Set the working directory to the REST API folder
         run: npm test # Run the test suite to ensure code correctness
 
+      - name: Log in to GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}  
+
       # Build the Docker image for the CI pipeline
       - name: Build Docker image
-        run: docker build -t url-shortner-api:ci ./rest-api # Build the Docker image for the CI pipeline
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./rest-api
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
